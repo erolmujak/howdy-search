@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Howdy — Search for leads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #FFFFFF;
+    --bg-nav: #FAF9F7;
+    --bg-card: #FAF9F7;
+    --bg-chip: rgba(33, 33, 33, 0.05);
+    --bg-chip-hover: #E6E6E6;
+    --bg-pill: #FFFFFF;
+    --bg-pill-hover: rgba(33, 33, 33, 0.05);
+    --text-primary: #212121;
+    --text-secondary: #6B6A65;
+    --text-tertiary: #9A998F;
+    --border-tertiary: rgba(0, 0, 0, 0.07);
+    --border-secondary: rgba(0, 0, 0, 0.14);
+    --accent: #5B5BF5;
+    --accent-hover: #4A4ADD;
+    --nav-active-bg: #F1EFE7;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    --nav-width: 240px;
+    --right-width: 360px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── APP SHELL ──────────────────────────────────────────────── */
+  .app {
+    display: grid;
+    grid-template-columns: var(--nav-width) 1fr;
+    min-height: 100vh;
+  }
+
+  /* ─── LEFT NAV ───────────────────────────────────────────────── */
+  .nav {
+    background: var(--bg-nav);
+    border-right: 0.5px solid var(--border-tertiary);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px 24px;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo .logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-logo .logo-mark svg { width: 22px; height: 22px; }
+
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s, color 0.1s;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(0, 0, 0, 0.03); color: var(--text-primary); }
+  .nav-item.active {
+    background: var(--nav-active-bg);
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .nav-item .label { flex: 1; }
+  .nav-item .badge {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 999px;
+  }
+
+  .nav-extension {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    margin-top: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+  .nav-extension:hover { background: rgba(0, 0, 0, 0.03); color: var(--text-primary); }
+  .nav-extension img,
+  .nav-extension .chrome-icon {
+    width: 18px;
+    height: 18px;
+  }
+  .chrome-icon {
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #EA4335 0deg 120deg, #FBBC05 120deg 240deg, #34A853 240deg 360deg);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .chrome-icon::after {
+    content: '';
+    position: absolute;
+    inset: 30%;
+    background: #4285F4;
+    border-radius: 50%;
+    border: 2px solid var(--bg-nav);
+  }
+
+  .nav-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+  .nav-footer:hover { background: rgba(0, 0, 0, 0.03); }
+  .nav-footer .avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #D7C9B5;
+    color: #5A4530;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .nav-footer .name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-footer .chev {
+    font-size: 10px;
+    color: var(--text-tertiary);
+  }
+
+  /* ─── MAIN AREA ──────────────────────────────────────────────── */
+  .main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .topbar {
+    padding: 22px 40px 18px;
+    font-size: 15px;
+    color: var(--text-primary);
+    border-bottom: 0.5px solid var(--border-tertiary);
+  }
+
+  .workarea {
+    padding: 32px 40px 64px;
+    display: grid;
+    grid-template-columns: 1fr var(--right-width);
+    gap: 32px;
+    align-items: start;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .builder { min-width: 0; }
+  .side {
+    position: sticky;
+    top: 24px;
+  }
+
+  @media (max-width: 1100px) {
+    .workarea { grid-template-columns: 1fr; }
+    .side { position: static; }
+  }
+
+  /* ─── GROUPS ─────────────────────────────────────────────────── */
+  .groups {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .or-between-groups {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    padding: 4px 0;
+    position: relative;
+  }
+  .or-between-groups::before,
+  .or-between-groups::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 28px);
+    height: 0.5px;
+    background: var(--border-tertiary);
+  }
+  .or-between-groups::before { left: 0; }
+  .or-between-groups::after  { right: 0; }
+
+  .group {
+    background: var(--bg-card);
+    box-shadow: 0px 0.7226247621292714px 0.7226247621292714px -1.5px rgba(0, 0, 0, 0.21), 0px 2.7462399638921484px 2.7462399638921484px -3px rgba(0, 0, 0, 0.18), 0px 12px 12px -4.5px rgba(0, 0, 0, 0.02), 0px 0px 0px 1px rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-xl);
+    padding: 22px;
+  }
+
+  .group-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin: 0 0 14px 6px;
+  }
+
+  /* ─── CONDITION (one row inside a group) ─────────────────────── */
+  .condition {
+    background: var(--bg-page);
+    border-radius: var(--radius-lg);
+    box-shadow: 0px 0.7226247621292714px 0.7226247621292714px -1.5px rgba(0, 0, 0, 0.21), 0px 2.7462399638921484px 2.7462399638921484px -3px rgba(0, 0, 0, 0.18), 0px 12px 12px -4.5px rgba(0, 0, 0, 0.02), 0px 0px 0px 1px rgba(0, 0, 0, 0.05);
+    padding: 14px 16px;
+    position: relative;
+  }
+  .condition + .condition { margin-top: 10px; }
+
+  .condition-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-right: 30px; /* space for × */
+  }
+
+  .verb-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 12px;
+    background: var(--bg-pill);
+    border: 1px solid rgba(33, 33, 33, 0.1);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.1s;
+    white-space: nowrap;
+  }
+  .verb-pill:hover { background: var(--bg-pill-hover); }
+  .verb-pill .caret { display: flex; align-items: center; justify-content: center; width: 12px; height: 12px; color: var(--text-secondary); }
+  .verb-pill .caret svg { width: 12px; height: 12px; }
+
+  /* Read-only secondary pill (e.g. "Last 30 days", "In the last 14 days", "New York, USA") */
+  .info-input {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 180px;
+    height: 32px;
+    padding: 0 12px;
+    background: var(--bg-chip);
+    border: none;
+    border-radius: 999px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: inherit;
+    outline: none;
+    transition: background 0.1s;
+  }
+  .info-input:hover { background: var(--bg-chip-hover); }
+  .info-input:focus { background: var(--bg-chip-hover); }
+  .info-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    background: var(--bg-pill);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+  .info-pill:hover { background: var(--bg-pill-hover); }
+  .info-pill .caret { display: flex; align-items: center; justify-content: center; width: 12px; height: 12px; color: var(--text-secondary); margin-left: 4px; }
+  .info-pill .caret svg { width: 12px; height: 12px; }
+
+  .condition-x {
+    position: absolute;
+    top: 16px;
+    right: 14px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.1s, color 0.1s;
+  }
+  .condition-x:hover { background: rgba(0, 0, 0, 0.05); color: var(--text-primary); }
+  .condition-x svg { width: 12px; height: 12px; }
+
+  .chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* ─── CHIPS ──────────────────────────────────────────────────── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 12px 0 4px;
+    background: var(--bg-chip);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.1s, box-shadow 0.1s;
+  }
+  .chip:hover { 
+    background: var(--bg-chip-hover);
+  }
+  .chip .handle { font-weight: 500; }
+  .chip-x {
+    width: 16px;
+    height: 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 2px;
+    transition: background 0.1s, color 0.1s;
+  }
+  .chip-x:hover { background: rgba(0, 0, 0, 0.06); color: var(--text-primary); }
+  .chip-x svg { width: 12px; height: 12px; }
+
+  .add-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px 0 12px;
+    background: transparent;
+    border: 0.5px dashed var(--border-secondary);
+    border-radius: 999px;
+    color: var(--text-tertiary);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.1s, color 0.1s, border-style 0.1s;
+  }
+  .add-chip:hover {
+    background: var(--bg-chip);
+    color: var(--text-primary);
+    border-style: solid;
+  }
+
+  /* Avatar styles */
+  .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #000;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    object-fit: cover;
+    overflow: hidden;
+  }
+  .avatar-photo {
+    display: block;
+  }
+  .avatar-mono {
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    padding: 0 3px;
+  }
+  .avatar-hash {
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  /* ─── BOTTOM ACTIONS (AND / OR) ──────────────────────────────── */
+  .group-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .action-btn {
+    display: inline-flex;
+    padding: 4px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    background: #FFF;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.10), 0 1px 2px 0 rgba(0, 0, 0, 0.10);
+    color: #212121;
+    font-feature-settings: 'salt' on;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: -0.06px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.1s, box-shadow 0.1s;
+  }
+  .action-btn:hover { 
+    background: #F5F5F5;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+  }
+  .action-btn svg { width: 12px; height: 12px; }
+
+  /* ─── RIGHT-SIDE PANEL ───────────────────────────────────────── */
+  .reach-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 28px 24px 24px;
+    text-align: center;
+  }
+  .reach-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin: 0 0 12px;
+  }
+  .reach-number {
+    font-size: 52px;
+    font-weight: 500;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .reach-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 22px;
+  }
+  .configure-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.1s;
+  }
+  .configure-btn:hover { background: var(--accent-hover); }
+
+  /* ─── INLINE EDITOR (popover) ────────────────────────────────── */
+  .editor {
+    position: absolute;
+    background: var(--bg-page);
+    border: 0.5px solid var(--border-secondary);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+    z-index: 100;
+    min-width: 260px;
+    max-width: 320px;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .editor-search {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 9px 11px;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text-primary);
+    font-family: inherit;
+    margin-bottom: 4px;
+  }
+  .editor-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.1s;
+  }
+  .editor-option:hover { background: var(--bg-card); }
+  .editor-option.disabled { opacity: 0.4; cursor: default; }
+  .editor-option.disabled:hover { background: transparent; }
+  .editor-option .ph { font-weight: 500; }
+  .editor-option .sb { font-size: 11px; color: var(--text-tertiary); }
+  .editor-option .check { margin-left: auto; color: var(--accent); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ════ LEFT NAV ════ -->
+  <aside class="nav">
+    <div class="nav-logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 22 C 6 12, 14 6, 20 8 C 26 10, 28 18, 22 22 C 18 24, 14 22, 12 18" />
+        </svg>
+      </span>
+      <span>howdy</span>
+    </div>
+
+    <div class="nav-list">
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/>
+        </svg>
+        <span class="label">Lists</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/><path d="M12 4v12"/><path d="m7 9 5-5 5 5"/>
+        </svg>
+        <span class="label">Campaigns</span>
+      </a>
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="8" r="3"/><path d="M4 19c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="15" r="3.5"/><path d="m20 18 2.5 2.5"/>
+        </svg>
+        <span class="label">Search</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="12" r="4"/><circle cx="15" cy="12" r="4"/>
+        </svg>
+        <span class="label">Credits</span>
+        <span class="badge">20</span>
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.4" fill="currentColor"/>
+          <line x1="4" y1="17" x2="20" y2="17"/><circle cx="15" cy="17" r="2.4" fill="currentColor"/>
+        </svg>
+        <span class="label">Settings</span>
+      </a>
+
+      <div style="height: 12px;"></div>
+
+      <a class="nav-extension">
+        <span class="chrome-icon"></span>
+        <span class="label">Download Extension</span>
+      </a>
+    </div>
+
+    <div class="nav-footer">
+      <span class="avatar-circle">B</span>
+      <span class="name">Brandon</span>
+      <span class="chev">▾</span>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <main class="main">
+    <div class="topbar">Search for leads</div>
+
+    <div class="workarea">
+      <div class="builder">
+        <div class="groups" id="groups"></div>
+      </div>
+
+      <div class="side">
+        <div class="reach-card">
+          <p class="reach-label">REACHABLE ACCOUNTS</p>
+          <p class="reach-number" id="reach-number">—</p>
+          <p class="reach-sub" id="reach-sub">Add conditions to see audience size</p>
+          <button class="configure-btn">Configure Campaign</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+(function() {
+  // ─── PROFILE IMAGES ──────────────────────────────────────────
+  const PROFILE_IMAGES = {
+    'voguemagazine': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAYHCP/EACEQAAICAgICAwEAAAAAAAAAAAECAwQABQYREhMVISIU/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOMsZZ8OrcOuaGb514qlyubao/8AQ4ezI9R3qAKAVVEng8Hb6+rS9kBfJaJNDwB7VRNdc1M8L6tDcOw2LQtHs3MCSQQ9MAYkZyVkf8FPaTI3gOgyrGWnMNdx+HiWitab402n18TbNlu+cy2fdYUqEMhP6RULdIFAWMgj2dMwIvGMYDGMYH//2Q==',
+    'hypebeast': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAYFCP/EACQQAAAGAQMEAwAAAAAAAAAAAAABAgMREgQFBhMUFRYhByIx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOMgFFtdWyEpLydjcLpm4yR9ueZRVHIrlV90qsZIrVPqVTJkUDRyj+LF6ZlFip3mxnqNrpjdPGdabKrPJciqa4PqKxWSJuYlUBGAKDcXhldRPbx69J5jfbyzuL1i0Xycpo/Xb8dakSYtPuIAJ8AAAAAAf//Z',
+    'cfda': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAACgnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAUHCAb/xAAlEAACAQMCBgMBAAAAAAAAAAABAgMEBREGEgAIExUhMRQWIlH/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAgT/xAAbEQACAgMBAAAAAAAAAAAAAAAAAQIDBBGhEv/aAAwDAQACEQMRAD8Ak+UHly099ToNe69tcV0rbjGJ6C3VUYaCCFh+HdD4dmBDANkAEeM+tW9stvbjbu30nwiu00/RXpEfzbjGOOGtaGnkWdKe5s2G+CVuTQ296FYw0JVRIVXCmONiU3l9xA6eGEdWaSqbvUWW5XGzFY0urSO1HmlqIqX41Rs2lCkiAymBtvh1OA27p7zDm/WkjVXjxdTtnLSXeopzm95cdPfU7hr3QVtitdbbo2qbhQU6hYJ4QMu6J6RlALYXAIB8Z9uLrohrTuAq9R0jQ6Zjo56Oshqq2PekDI8ondEDiR1XowMergMszKrKwYuLMpSnKFzHae+p2/QWvblFa623RrTW+vqGCwTwgYRHf0jKAFy2AQB5z71b3O29uFx7hSfCK7hUdZekR/d2cY4cOAMpc33Mbp76nX6C0FdIrpW3GMwV9wpZA0EELD9ojjw7MCVJXIAJ859OHDgD/9k=',
+    'harpersbazaarus': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAcIBAX/xAAlEAACAQMCBgMBAAAAAAAAAAABAgMEBREABggSExUhMRQWIlH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A9PhB4ctvfU6Dfu/bXFdK24xiegt1VGGgghYfh3Q+HZgQwDZABHjPrVvbLb2427t9J8Irymn6K9Ij+cuMY1PoH3BBT109katFqhioqigjihZ+anhneSWKMHwTLAFjUL6yMnyuulZtxc8tRLT35kW9Q8tMuV5qPq/FOWBP5yWrDy4bkKIfAK6CFcXvDjt76ncN+7CtsVrrbdG1TcKCnULBPCBl3RPSMoBbC4BAPjPtq2ztuL5QTcDVAtdNVVS3FwjiFqNhVmPyfD4jkpgzEEZVv5kNBEuELiO299Tt+wt+3KK11tujWmt9fUMFgnhUaRHf0jKAFy2AQB5z71b3O29uFx7hSfCK8wqOsvSI/vNnGNNNBlLi+4jdvfU6/YWwrpFdK24xmCvuFLIGgghYftEceHZgSpK5ABPnPpppoP/Z',
+    'wwd': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGQABAQADAQAAAAAAAAAAAAAAAAgEBQYH/8QAJxAAAQMEAQMDBQAAAAAAAAAAAQIDBAAFERIHBhMhCEFRFBUiMWH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AjdtoqGcVktsZ9qpnhBHDdy4phMdZL6ctd7X9f06Xn2mFP4k6PM3FYVgp7P5NpdONckbCvQIsX03zrk4VvdHW/wC5SirOsdTUZu2zzhIGcNCYxgeNe6kbYWSaCJ5MIhouIHlIyR/KVU/LDvHE7i+4TI0PjiHJft1tetrNhDCbk1OVqqUh0M4w0lJcBDgABAwNtaUEx2WawUJYkKCFDwlR/RFdA22gI32Tr858UpQam/XVhLCosRYcUsYWtJ8AfAPvSlKD/9k=',
+    'complex': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAZHCAT/xAAmEAACAgEEAgEFAQEAAAAAAAABAgMEBQAGBxESIQgUIjFBURNC/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AMucX7FyvIO45cLireOpNBTmu2LV+Vo4IIYl7dmKqzfwegfz/OyLPofFfkK4tH/LM7VD3JHRE+smYgKJirErEVKsK8hUgn9d9d64fhxjny/JuWxTRxy0rm279e9E3mHkruqo6xlASr/cCD4t30R12QRqqG/Z2Zjo8UKdWjHtWhTb6mOWewkUM0mRqQhuo+wsCh2eVvEP0CRF36DDfLPHec4z3BTwe4J6Mtu1j4r6io7sqJIWAVvJVIYFT2ACPx7OmrE+ceUs5DnA1b8cMeQxuKrVbaxSmRA58pR0xVf+ZV/WmgrHjzeuV2Peyt3DxwmxksTZxbSOXDQpMoBkQqQQ467B9gH9anlf5AZtdtVcFc2ltu/BBQx9B5Jza854qTu8IkCzBT90shb103kQQQAA00EH5V31kuRt3SbpzNOjXyU9eKKy1VGVZ2jQIJGDMemKhQeuh6HoaaaaD//Z',
+    'bof': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAgFBgT/xAAnEAACAQQABgIDAQEAAAAAAAABAgMEBQYRAAgSEyExBxYUFSJBUf/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDT5QeXLHvqdBnue2uK6VtxjE9BbqqMNBBCw/h3Q+HZgQwDbABHjfqrf1ltNuNu/X0n4RXpNP2V7RH/ALp1rXErZQLQMq+VXsRZGpji72xLU4Sv8j+0o2UMVmZNjwp6t6Pg749+bY1eMmz+6XektVRFmlua6R01bDN+HPSujBrUyEjtzxyohibqBJEkhZgIwFDM5veXHHvqdwz3ArbFa623RtU3Cgp1CwTwgbd0T0jKAW0ugQD437cdp8Z47jWQH5Fa501ra2W7Nq2papRU79OIRSyIEbRCxHomVwNbBI/1uHAcXyhcx2PfU7fgWe3KK11tujWmt9fUMFgnhUaRHf0jKAF22gQB537pyaDHp5kyWW4dyARjpkNykNHoHqD9vr7JYEAh+nY0PPjhw4CY+b7mNx76nX4FgV0iulbcYzBX3ClkDQQQsP7RHHh2YHpJXYAJ879OHDgP/9k=',
+    'modelsdot': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAYHCP/EACMQAAIBAwQBBQAAAAAAAAAAAAECAwAEEgUHESEGExQWMUL/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A4ypVn4Qm3jaRL8rk1Jb4yME9uTiqGS2UH67Ije7cc/qOMHokNZ2MGwiG7jkvtRZpY5o4nmExjjfKJrZhjHljiHWckc5FhEpXFqDGaVcbgpt7No2m3fiFxPb3vpBbuznWRm5CICxYqEBJy6XkHF25XJUCgh6UpQKUpQf/2Q==',
+    'imgmodels': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAAAAcIBf/EACcQAAIBAwEIAwEBAAAAAAAAAAECAwQFEQYACBITFSEiMQcUFlEm/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOnug7uWnvydBr3XtriulbcYxPQW6qjDQQQsPB3Q9nZgQwDZABHbPrVvTLb0427p9J9Irwmn5K8oj+cOMY2lmm6H5gW4M8N1sTaVWeea1x07Is0lGTG1JAcwlUCrHws+XJSeTHkkZ26NRbPmOTVNx/0NrhsPKqBQGnSP7Bd5JDEZFeIqAkbhezHLxRMQQ0ikIpve7uOnvydw17oK2xWutt0bVNwoKdQsE8IGXdE9IygFsLgEA9s+21Zt1r+X4bTK2ttTWeekaaKa5LTxRrElKvPFRDGxiBKMhp24nHF4yjK+LFsEm3Qt47T35O36C17corXW26Naa319QwWCeFRhEd/SMoAXLYBAHfPvVvU7b04XHqFJ9IrxCo5y8oj+8WcY2bNgylvfbxunvydfoLQV0iulbcYzBX3ClkDQQQsPNEcdnZgSpK5ABPfPps2bB//Z',
+    'thesocietynyc': 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbGUgSW5jLiAyMDAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAYABgDASIAAhEBAxEB/8QAGAABAAMBAAAAAAAAAAAAAAAAAAUGBwj/xAAfEAACAgIDAQEBAAAAAAAAAAABAgMEAAUGERMSIQf/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A4yxmj/xmTiC1dxByhtTB7tAi2ri+r14OpfUpCUPoCTH35yRTgqvm3Rfqf2m74hQ29xtdDwqfTNWvHUINaZbaRrCDUWwXT5Mn32CT25f7+iY/LAxnGW7n2x47c1HHhotZUp2ZaZs7YxfrC2W8mQfgCxlYVmCD8VrDgHoKFYFRxjGAxjGB/9k=',
+  };
+
+  // ─── DATA ────────────────────────────────────────────────────
+  // type: 'photo' (uses profile images), 'mono' (black circle with short caps), 'hash' (#)
+  
+  const PEOPLE = [
+    { handle: 'thejustinwelsh', name: 'Justin Welsh', sub: '@thejustinwelsh · 89K', type: 'photo', image: 'https://scontent-atl3-3.cdninstagram.com/v/t51.82787-19/651568444_18572214181025266_8355029815865103897_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-atl3-3.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2gGpSbxS9VpvLuh5js1fHCqPag23Arrrz3M0RjrgalIkxZxRUxKkrqWRHyfkiu8uzd8&_nc_ohc=_UleU7DEQX0Q7kNvwHYQpKL&_nc_gid=7MdVDeOT19xyXkep-F9xVQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af6d9PzaonLpNdoMY40FwhEJb16R4DmtaaHFNoNNIuUvmg&oe=6A0BD3BC&_nc_sid=8b3546', weight: 1.2 },
+    { handle: 'voguemagazine', name: 'Vogue', sub: '@voguemagazine · 51.6M', type: 'photo', image: 'https://scontent-sjc6-1.cdninstagram.com/v/t51.2885-19/449319957_831601858493538_3317994094257200831_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby40MDAuYzIifQ&_nc_ht=scontent-sjc6-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gF-Lpu07wUAOIrzmftZEbcLUS_IO5_QF9ilLj7CrRjtmXLJNQAMtptPvHmMyGGuHjo&_nc_ohc=JQMX1zSRkJcQ7kNvwESlXvo&_nc_gid=z7Kyb5OZdVGkAnM2KqlLFQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5QrmmVeQ7ZMzQw1wwX6xQX4bBczkB-AMUtAeV83rVx4Q&oe=6A0BAC84&_nc_sid=8b3546', weight: 1.4 },
+    { handle: 'backstagecast', name: 'Backstage', sub: '@backstagecast · 822K', type: 'photo', image: 'https://scontent-iad3-1.cdninstagram.com/v/t51.2885-19/85006412_552944365573001_441483820114378752_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zNjAuYzIifQ&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gFaQMdUPodONd3f2vB1CLIO9JFl-inOREv78ua81xfZBSm59tNtsMSdfjHDCOOAKNM&_nc_ohc=EU1hVBsfBbMQ7kNvwHE_G9L&_nc_gid=K-yxW6wmDaglkiHiM0UpHQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af6Nc2qUCvsmHI49jkCkiTiMC60WtEFca-zC0DklvRaDpQ&oe=6A0BD77A&_nc_sid=8b3546', weight: 0.9 },
+    { handle: 'actorsaccess', name: 'Actors Access', sub: '@actorsaccess · 53K', type: 'photo', image: 'https://scontent-ord5-2.cdninstagram.com/v/t51.2885-19/76847570_500707524135328_8387245919841550336_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby44NDguYzIifQ&_nc_ht=scontent-ord5-2.cdninstagram.com&_nc_cat=104&_nc_oc=Q6cZ2gHErNA7Bde9QJUxIbejLsa2qewyMAeQjwBlJ9TVnkrRmZfA_Hffu5Al53HJeX1qVUQ&_nc_ohc=AW4JjjiX-x8Q7kNvwFnpgYR&_nc_gid=i4a4nT8KuUBYWzQPNxKDIg&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af4n8nB6FN8JPcK3AtYvrn6P3E7w2cpK8U2FEepPB-Ziww&oe=6A0BAE1A&_nc_sid=8b3546', weight: 0.7 },
+    { handle: 'nyfw', name: 'NYFW', sub: '@nyfw · 1M', type: 'photo', image: 'https://scontent-atl3-1.cdninstagram.com/v/t51.2885-19/344360479_1035521990752397_4866519274691836483_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby40MTguYzIifQ&_nc_ht=scontent-atl3-1.cdninstagram.com&_nc_cat=105&_nc_oc=Q6cZ2gFbBLI9J9RSglLZRRihy5U5g4cZ5KDW0YsgVh6XF6knXAi0o_77Jr3rq3x1t1srCIg&_nc_ohc=nc5OerdrI_AQ7kNvwGiCRxn&_nc_gid=J7na-xGqy6ca8O3HOQk52w&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5jH7C8lR-IkV777OgpXT9jH6XhDOm-mhnKqMVJ4ME7Ng&oe=6A0BBF65&_nc_sid=8b3546', weight: 1.0 },
+    { handle: 'castingnetworks', name: 'Casting Networks', sub: '@castingnetworks · 151K', type: 'photo', image: 'https://scontent-atl3-1.cdninstagram.com/v/t51.2885-19/488388292_2870872419749574_9215694996516875240_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-atl3-1.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2gFgs_39bYPL9hjY-pup601vY5TqLsnEx8ULwsoENLz0D3EPutX0diOw_6wb1rit0bo&_nc_ohc=5dprSj4ddpUQ7kNvwG2osS2&_nc_gid=KLaIkMeBJu0RTIA9PseDtA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af4uvveqcTjE23iE97j_H-q8K3d1ctUsFXhSyLCh-59sPg&oe=6A0BCB66&_nc_sid=8b3546', weight: 0.8 },
+    { handle: 'hormozi', name: 'Alex Hormozi', sub: '@hormozi · 4.6M', type: 'photo', image: 'https://scontent-atl3-2.cdninstagram.com/v/t51.82787-19/517386261_18283544059250343_2310324648245609872_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-atl3-2.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gGOWUuPqyxuVrO4YxGhEpkLN-SBNF4sqGgf_F0EkJ5Z5v3C5Do1prhnBAX0EhPO_P4&_nc_ohc=INoJTA7cPJMQ7kNvwHVeCOQ&_nc_gid=AnBvv_ubhqC8YOyp6cDZRQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5f1UGN1Shg6tlz46tcCeJZlt6unEv9xkmmZpt4B_YoUQ&oe=6A0BB740&_nc_sid=8b3546', weight: 1.3 },
+    { handle: 'hypebeast', name: 'HYPEBEAST', sub: '@hypebeast · 10.3M', type: 'photo', image: 'https://scontent-det1-1.cdninstagram.com/v/t51.2885-19/462380308_1272568843914664_923375628180209620_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDI0LmMyIn0&_nc_ht=scontent-det1-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gEltnLG7dFIIy_2K6dmuNio-nOoCr3J2RdPWeFFLvUAXb5eoED4VTjDeoE0GpYR1Oc&_nc_ohc=L_2n-VkMD-EQ7kNvwFYnslr&_nc_gid=7Wy1TM4Vwaxd1BhwAtPfDA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af7fcLWS_9AQ6c_Sul1k2IM2O4zDgj53NkJPkcxiZ0erZA&oe=6A0BD7EC&_nc_sid=8b3546', weight: 1.2 },
+    { handle: 'cfda', name: 'CFDA', sub: '@cfda · 1.3M', type: 'photo', image: 'https://scontent-atl3-2.cdninstagram.com/v/t51.2885-19/505713819_18508843564063406_3737644172018416562_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MzIuYzIifQ&_nc_ht=scontent-atl3-2.cdninstagram.com&_nc_cat=102&_nc_oc=Q6cZ2gFXOk-AYcGIXWOYT4PopGWmHJAZ1j44JyyfhsFjn_v2ifpiUr7-gVqqq2TVF2AP8sw&_nc_ohc=qMT2e0yetQ8Q7kNvwEXB2po&_nc_gid=lqypIukt2txjtAAjwJjZNg&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af6YfiuaaEEkBGdEb78OVnn6_AlSNGY_lqG-BuaeHxvNhA&oe=6A0BB0A0&_nc_sid=8b3546', weight: 0.7 },
+    { handle: 'complex', name: 'COMPLEX', sub: '@complex · 10.7M', type: 'photo', image: 'https://instagram.fagc3-1.fna.fbcdn.net/v/t51.2885-19/462427675_404850279336143_1868828769212657527_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fagc3-1.fna.fbcdn.net&_nc_cat=1&_nc_oc=Q6cZ2gEM59Yq3J9eoAx7_yy3U_BfzmaAtZfFSyx75586tMQpQRmCvrc2_jJYgFZ1JlnR8fs&_nc_ohc=QWrIeYlkFYsQ7kNvwGGNBEx&_nc_gid=bz16vinqaocXG1mHDDHJQQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5Gu1fTuUhCg0xVc5EdI9DQdxWtvI_ALYnZiQvlwJcPQg&oe=6A0BA875&_nc_sid=8b3546', weight: 1.1 },
+    { handle: 'adidas', name: 'adidas', sub: '@adidas · 29.1M', type: 'photo', image: 'https://scontent-atl3-1.cdninstagram.com/v/t51.2885-19/467866883_491535416933387_5030849769502897819_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MzIuYzIifQ&_nc_ht=scontent-atl3-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gFbWF7VkSkTlQKB3NxyaT9RX2hm0rPJ4OVN_QfLs0A7dVflLPOX3jZM9EFsUCN01No&_nc_ohc=K0S06m9BsNkQ7kNvwGxsEPn&_nc_gid=tqxJ4g8jP_y4AEwQBEYbww&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af45r47eQ_8LMmCN2NqvUEgwLQh3HMRF9j3T_nK2OkMfNQ&oe=6A0BAFD7&_nc_sid=8b3546', weight: 1.0 },
+    { handle: 'gymshark', name: 'Gymshark', sub: '@gymshark · 8.4M', type: 'photo', image: 'https://scontent-mia3-3.cdninstagram.com/v/t51.2885-19/469307284_1558880571660077_7433240611982824601_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=scontent-mia3-3.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gGVYTjMhbA5m0FMT4jqgxDO7HVuq7y7bj2CHXP1SsR98AfVcDW0v7hpVHuIjE7z5EQ&_nc_ohc=VYuQZYz-LOUQ7kNvwFt9Ru0&_nc_gid=nZqHP4GMl4Y1hA0NJYzMEA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af4pbFu6jHWCgyQxvYouhvVbynwX1UA9EdgghVCd_cqONA&oe=6A0BB5C7&_nc_sid=8b3546', weight: 0.9 },
+    { handle: 'bof', name: 'The Business of Fashion', sub: '@bof · 3.1M', type: 'photo', image: 'https://scontent-msp1-1.cdninstagram.com/v/t51.2885-19/13188136_1733571083580012_48688336_a.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby45NjAuYzIifQ&_nc_ht=scontent-msp1-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gFxVMKQkP6YZA3vilvzh44uBwXCVnKD1xRMUXSYSQXELHJbfdovrWH6LYyryx5Skr4&_nc_ohc=m1_-qlWyorcQ7kNvwHN6yI1&_nc_gid=sJI9H6VljQ2OsUkHVdB1SA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5wK64RHHCZ9pYYis7i2-tL3aq9Zq7KfMbV1R7BlnJvcQ&oe=6A0BD968&_nc_sid=8b3546', weight: 0.9 },
+    { handle: 'afterparty', name: 'AFTERPARTY™️', sub: '@afterparty · 54K', type: 'photo', image: 'https://scontent-ord5-2.cdninstagram.com/v/t51.2885-19/328567762_226289486442074_216013934208784973_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41NTIuYzIifQ&_nc_ht=scontent-ord5-2.cdninstagram.com&_nc_cat=102&_nc_oc=Q6cZ2gGr_dFTu4Z5NFHLf27HuJAU6so8Df8jUrEJwOvgI4JhY7ZCSadeYAentUVZrRAwGCQhIWqglixd-BwEIllj37kV&_nc_ohc=6do0MoFRMpcQ7kNvwEzLnpi&_nc_gid=S5u5keZi9ZuPTMd0UjrxKQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af4QkR0Ga7b2xoOiyey8Egr4XvMlPRDP86dAJMf9V8li0Q&oe=6A0BBDA2&_nc_sid=8b3546', weight: 0.6 },
+    { handle: 'modelsdot', name: 'Models.com', sub: '@modelsdot · 681K', type: 'photo', image: 'https://scontent-iad3-2.cdninstagram.com/v/t51.82787-19/517237168_18514726741049607_2124718514342265746_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby41NjQuYzIifQ&_nc_ht=scontent-iad3-2.cdninstagram.com&_nc_cat=103&_nc_oc=Q6cZ2gEEx-v5BM6PN2UvU_JpH9xcSDaRbG4KZtZkDarrEtFi58NZ7uukjIzxRVpP2oBzjwE&_nc_ohc=uLFTLhn7nU8Q7kNvwHhuEEw&_nc_gid=cdrko1f7p1s5X-sh8K7qoQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af5w4FoQPE-_1YlIUCPpYnc1N5a6fXwqLUNyfLoRY1y5pw&oe=6A0BCAED&_nc_sid=8b3546', weight: 0.8 },
+    { handle: 'wwd', name: 'WWD', sub: '@wwd · 2.3M', type: 'photo', image: 'https://scontent-iad3-2.cdninstagram.com/v/t51.2885-19/16110291_387677088254140_4065679272902131712_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby42MDAuYzIifQ&_nc_ht=scontent-iad3-2.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gGy51JNjOU5ptcPfXbBQR1i4EdmnaVAhmrekWy2nklsnJ-cFn9nTZyHZlhY-3H5RjY&_nc_ohc=mYqM93d48zMQ7kNvwFv4Sip&_nc_gid=czGQ10_O9h4hhMUzKRz0bg&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af7l0vqvT303fCZwrSYEDtEQiyG-80Ferk3jvmKN171qgg&oe=6A0BAB47&_nc_sid=8b3546', weight: 0.6 },
+    { handle: 'hubspot', name: 'HubSpot', sub: '@hubspot · 650K', type: 'photo', image: 'https://scontent-hou1-1.cdninstagram.com/v/t51.2885-19/275228631_256569163216824_4692603408282840364_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-hou1-1.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2gH9pFWEu4rSwlO_SltqLCAjZ-QEDtbcLWi2JmD72MM_V-QEW24yNtv6656XtOoY4Y05feEiXHVdSBEmCMvJYr7s&_nc_ohc=WAl8dwDHzXwQ7kNvwEkex-V&_nc_gid=-d_bVOJMMxiKdMfaDlm3_Q&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af6kIAkPZBAhJoVifb7YP3DeNsJPxi_7cwtWJjbBVeSpFA&oe=6A0BCB58&_nc_sid=8b3546', weight: 0.7 },
+    { handle: 'thesocietynyc', name: 'Society', sub: '@thesocietynyc · 385K', type: 'photo', image: 'https://scontent-ord5-3.cdninstagram.com/v/t51.2885-19/226554306_2886407961608890_40373551006719356_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-ord5-3.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2gHRU37_BJxMaiuhHnOl04ch0P-8zVF7aSqVS2GJEeITqJpUHMJ84HN3nbpoLn0jGoY&_nc_ohc=-lpAdfn90UwQ7kNvwHNw7ZZ&_nc_gid=f6I9XTgszT2FmwiPODhTDw&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af7-94hf8HODrDwo8j3zAhiDRRQX4C_olpJJOKt1MimU6w&oe=6A0BCDC9&_nc_sid=8b3546', weight: 0.8 },
+    { handle: 'garyvee', name: 'Gary Vay-Ner-Chuk', sub: '@garyvee · 11.5M', type: 'photo', image: 'https://scontent-iad3-1.cdninstagram.com/v/t51.2885-19/447913595_1241465900569550_7339008130351792368_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gFl2jwIpMPYdp0UgdeNlB_WDgnmlDR6J4NF80RYkVuQmCBMLIOtjW0pRP-NRZgG6xM&_nc_ohc=v28bj_6u5AQQ7kNvwF52llx&_nc_gid=Noq21RrCVQjgTPyK8n8qEg&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af6w6GsedzqxyrymbMUoMttUn_nL_rLMUJBUXTeWsf385w&oe=6A0BD42B&_nc_sid=8b3546', weight: 1.1 },
+    { handle: 'lululemon', name: 'lululemon', sub: '@lululemon · 5.7M', type: 'photo', image: 'https://scontent-sjc6-1.cdninstagram.com/v/t51.2885-19/462748053_525257280134582_8372397240522564471_n.jpg?stp=dst-jpg_e0_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4zMjAuYzIifQ&_nc_ht=scontent-sjc6-1.cdninstagram.com&_nc_cat=1&_nc_oc=Q6cZ2gHoPUnXXKVi0_LP-PeJR-s2yGtxCsTaonPsWz0mTEorpDCqJKqBmJerf9FIXfrjjYVT1P1uDUI2k3Pykbb2uell&_nc_ohc=jAJ0rHdp-s8Q7kNvwEBcWOX&_nc_gid=zYWTw6LfIQtZdezxPJ-3qQ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_Af43jEq9acFrECfknXIExzBhWNiTKecWU9YbC4fAHWi0zQ&oe=6A0BD03E&_nc_sid=8b3546', weight: 0.8 }
+  ];
+
+  const VERBS = [
+    { id: 'located',    label: 'Located in',       mult: 0.6, input: 'location' },
+    { id: 'follows',    label: 'Follows',          mult: 1.0, input: 'chips' },
+    { id: 'liked',      label: 'Liked posts from', mult: 0.5, input: 'chips' },
+    { id: 'positive',   label: 'Positive comments',mult: 0.30,input: 'chips', modifier: 'time' },
+    { id: 'negative',   label: 'Negative comments',mult: 0.20,input: 'chips', modifier: 'time' },
+    { id: 'engaged',    label: 'Engaged with',     mult: 0.85,input: 'chips' },
+    { id: 'active',     label: 'Active',           mult: 1.0, input: 'none',  modifier: 'time' },
+    { id: 'followers',  label: 'Follower count',   mult: 0.7, input: 'none',  modifier: 'range' }
+  ];
+
+  const TIME_OPTIONS = [
+    'In the last 7 days',
+    'In the last 14 days',
+    'In the last 30 days',
+    'In the last 90 days'
+  ];
+
+  const RANGE_OPTIONS = [
+    '500 – 5K',
+    '1K – 50K',
+    '5K – 100K',
+    '50K – 500K'
+  ];
+
+  // Default state — matches the screenshot
+  let nextGid = 1, nextRid = 1;
+  function gid() { return 'g' + (nextGid++); }
+  function rid() { return 'r' + (nextRid++); }
+
+  let groups = [
+    {
+      id: gid(),
+      conditions: [
+        { id: rid(), verb: 'follows', targets: [
+            person('voguemagazine'), person('hypebeast'), person('complex')
+        ] },
+        { id: rid(), verb: 'active', time: 'In the last 14 days', targets: [] }
+      ]
+    }
+  ];
+
+  function person(h) { return PEOPLE.find(p => p.handle === h); }
+  function findVerb(id) { return VERBS.find(v => v.id === id) || VERBS[0]; }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  let activeEditor = null;
+  const groupsEl = document.getElementById('groups');
+  const reachNumEl = document.getElementById('reach-number');
+  const reachSubEl = document.getElementById('reach-sub');
+
+  // ─── AVATAR ──────────────────────────────────────────────────
+  const AVATAR_BASE = 'https://cdn.jsdelivr.net/gh/erolmujak/howdy-search@main/avatars';
+
+  function avatarHTML(p) {
+    if (!p) return '';
+    if (p.type === 'hash') {
+      return `<span class="avatar avatar-hash">#</span>`;
+    }
+    if (p.type === 'photo') {
+      const imgSrc = `${AVATAR_BASE}/${p.handle}.jpg`;
+      return `<img class="avatar avatar-photo" src="${imgSrc}" alt="" />`;
+    }
+    // mono: black circle with short caps
+    return `<span class="avatar avatar-mono">${esc(p.short || p.handle.substring(0, 2).toUpperCase())}</span>`;
+  }
+
+  // ─── RENDER ──────────────────────────────────────────────────
+  function render() {
+    groupsEl.innerHTML = groups.map((g, gIdx) => renderGroup(g, gIdx, gIdx === groups.length - 1)).join(
+      `<div class="or-between-groups">OR</div>`
+    );
+    updateReach();
+  }
+
+  function renderGroup(g, idx, isLast) {
+    const conds = g.conditions.map(c => renderCondition(g.id, c)).join('');
+    return `
+      <div class="group" data-group-id="${g.id}">
+        <div class="group-label">GROUP ${idx + 1}</div>
+        ${conds}
+        <div class="group-actions">
+          <button class="action-btn" data-action="add-condition" data-group-id="${g.id}">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6287_983)"><path d="M6 0.5C6.414 0.5 6.75 0.836 6.75 1.25V5.25H10.75C11.164 5.25 11.5 5.586 11.5 6C11.5 6.414 11.164 6.75 10.75 6.75H6.75V10.75C6.75 11.164 6.414 11.5 6 11.5C5.586 11.5 5.25 11.164 5.25 10.75V6.75H1.25C0.836 6.75 0.5 6.414 0.5 6C0.5 5.586 0.836 5.25 1.25 5.25H5.25V1.25C5.25 0.836 5.586 0.5 6 0.5Z" fill="currentColor"/></g><defs><clipPath id="clip0_6287_983"><rect width="12" height="12" fill="white"/></clipPath></defs></svg><span>AND</span>
+          </button>
+          ${isLast ? `
+            <button class="action-btn" data-action="add-or-group">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6287_983)"><path d="M6 0.5C6.414 0.5 6.75 0.836 6.75 1.25V5.25H10.75C11.164 5.25 11.5 5.586 11.5 6C11.5 6.414 11.164 6.75 10.75 6.75H6.75V10.75C6.75 11.164 6.414 11.5 6 11.5C5.586 11.5 5.25 11.164 5.25 10.75V6.75H1.25C0.836 6.75 0.5 6.414 0.5 6C0.5 5.586 0.836 5.25 1.25 5.25H5.25V1.25C5.25 0.836 5.586 0.5 6 0.5Z" fill="currentColor"/></g><defs><clipPath id="clip0_6287_983"><rect width="12" height="12" fill="white"/></clipPath></defs></svg><span>OR</span>
+            </button>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCondition(groupId, c) {
+    const verb = findVerb(c.verb);
+    const verbHTML = `
+      <button class="verb-pill" data-action="edit-verb" data-group-id="${groupId}" data-cond-id="${c.id}">
+        <span>${esc(verb.label)}</span>
+        <span class="caret"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.71967 3.71967C10.0126 3.42678 10.4873 3.42678 10.7802 3.71967C11.0731 4.01256 11.0731 4.48732 10.7802 4.78022L6.53022 9.03022C6.23732 9.32311 5.76256 9.32311 5.46967 9.03022L1.21967 4.78022C0.926777 4.48732 0.926777 4.01256 1.21967 3.71967C1.51256 3.42678 1.98732 3.42678 2.28022 3.71967L5.99994 7.4394L9.71967 3.71967Z" fill="currentColor"/></svg></span>
+      </button>
+    `;
+
+    // Build the head content based on verb type
+    let headExtras = '';
+    if (verb.input === 'location') {
+      headExtras = `<input class="info-input" data-action="edit-location" data-group-id="${groupId}" data-cond-id="${c.id}" value="${esc(c.location || '')}" placeholder="City, Country" />`;
+    } else if (verb.modifier === 'time') {
+      headExtras = `<span class="info-pill" data-action="edit-time" data-group-id="${groupId}" data-cond-id="${c.id}">
+        <span>${esc(c.time || TIME_OPTIONS[2])}</span>
+        <span class="caret"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.71967 3.71967C10.0126 3.42678 10.4873 3.42678 10.7802 3.71967C11.0731 4.01256 11.0731 4.48732 10.7802 4.78022L6.53022 9.03022C6.23732 9.32311 5.76256 9.32311 5.46967 9.03022L1.21967 4.78022C0.926777 4.48732 0.926777 4.01256 1.21967 3.71967C1.51256 3.42678 1.98732 3.42678 2.28022 3.71967L5.99994 7.4394L9.71967 3.71967Z" fill="currentColor"/></svg></span>
+      </span>`;
+    } else if (verb.modifier === 'range') {
+      headExtras = `<span class="info-pill" data-action="edit-range" data-group-id="${groupId}" data-cond-id="${c.id}">
+        <span>${esc(c.range || RANGE_OPTIONS[1])}</span>
+        <span class="caret"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.71967 3.71967C10.0126 3.42678 10.4873 3.42678 10.7802 3.71967C11.0731 4.01256 11.0731 4.48732 10.7802 4.78022L6.53022 9.03022C6.23732 9.32311 5.76256 9.32311 5.46967 9.03022L1.21967 4.78022C0.926777 4.48732 0.926777 4.01256 1.21967 3.71967C1.51256 3.42678 1.98732 3.42678 2.28022 3.71967L5.99994 7.4394L9.71967 3.71967Z" fill="currentColor"/></svg></span>
+      </span>`;
+    }
+
+    // Chips row (only for chip-input verbs)
+    let chipsHTML = '';
+    if (verb.input === 'chips') {
+      const chips = (c.targets || []).map(t => `
+        <span class="chip" data-action="edit-chip" data-group-id="${groupId}" data-cond-id="${c.id}" data-handle="${esc(t.handle)}">
+          ${avatarHTML(t)}
+          <span class="handle">${esc(t.handle)}</span>
+          <button class="chip-x" data-action="remove-chip" data-group-id="${groupId}" data-cond-id="${c.id}" data-handle="${esc(t.handle)}" aria-label="Remove"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.71962 1.71767C2.01254 1.42476 2.48715 1.42492 2.78017 1.71767L5.9999 4.9374L9.21962 1.71962C9.51254 1.42671 9.98715 1.42688 10.2802 1.71962C10.5732 2.01263 10.5732 2.48717 10.2802 2.78017L7.06142 5.99892L10.2802 9.21767C10.5732 9.51067 10.5732 9.98522 10.2802 10.2782C10.1342 10.4242 9.9428 10.4989 9.75088 10.4989C9.55888 10.4989 9.36562 10.4252 9.21962 10.2782L6.00087 7.05947L2.78017 10.2802C2.63423 10.4261 2.4428 10.5008 2.25087 10.5009L2.2499 10.4999C2.0579 10.4999 1.86562 10.4262 1.71962 10.2792C1.42687 9.98618 1.42672 9.51157 1.71962 9.21865L4.93935 5.99795L1.71962 2.77822C1.42688 2.4852 1.42671 2.01059 1.71962 1.71767Z" fill="currentColor"/></svg></button>
+        </span>
+      `).join('');
+      chipsHTML = `
+        <div class="chips-row">
+          ${chips}
+          <button class="add-chip" data-action="add-chip" data-group-id="${groupId}" data-cond-id="${c.id}">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6287_983)"><path d="M6 0.5C6.414 0.5 6.75 0.836 6.75 1.25V5.25H10.75C11.164 5.25 11.5 5.586 11.5 6C11.5 6.414 11.164 6.75 10.75 6.75H6.75V10.75C6.75 11.164 6.414 11.5 6 11.5C5.586 11.5 5.25 11.164 5.25 10.75V6.75H1.25C0.836 6.75 0.5 6.414 0.5 6C0.5 5.586 0.836 5.25 1.25 5.25H5.25V1.25C5.25 0.836 5.586 0.5 6 0.5Z" fill="currentColor"/></g><defs><clipPath id="clip0_6287_983"><rect width="12" height="12" fill="white"/></clipPath></defs></svg><span>add</span>
+          </button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="condition" data-cond-id="${c.id}">
+        <div class="condition-head">
+          ${verbHTML}
+          ${headExtras}
+        </div>
+        ${chipsHTML}
+        <button class="condition-x" data-action="remove-condition" data-group-id="${groupId}" data-cond-id="${c.id}" aria-label="Remove"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.71962 1.71767C2.01254 1.42476 2.48715 1.42492 2.78017 1.71767L5.9999 4.9374L9.21962 1.71962C9.51254 1.42671 9.98715 1.42688 10.2802 1.71962C10.5732 2.01263 10.5732 2.48717 10.2802 2.78017L7.06142 5.99892L10.2802 9.21767C10.5732 9.51067 10.5732 9.98522 10.2802 10.2782C10.1342 10.4242 9.9428 10.4989 9.75088 10.4989C9.55888 10.4989 9.36562 10.4252 9.21962 10.2782L6.00087 7.05947L2.78017 10.2802C2.63423 10.4261 2.4428 10.5008 2.25087 10.5009L2.2499 10.4999C2.0579 10.4999 1.86562 10.4262 1.71962 10.2792C1.42687 9.98618 1.42672 9.51157 1.71962 9.21865L4.93935 5.99795L1.71962 2.77822C1.42688 2.4852 1.42671 2.01059 1.71962 1.71767Z" fill="currentColor"/></svg></button>
+      </div>
+    `;
+  }
+
+  // ─── REACH NUMBER ────────────────────────────────────────────
+  let currentNum = 0;
+  let animFrame = null;
+  function animateNumberTo(target) {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    if (target === null) {
+      currentNum = 0;
+      reachNumEl.textContent = '—';
+      return;
+    }
+    const start = currentNum;
+    const t0 = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    function tick(now) {
+      const p = Math.min(1, (now - t0) / 600);
+      const eased = ease(p);
+      const jitter = (1 - p) * Math.abs(target - start) * 0.08 * (Math.random() - 0.5);
+      const v = Math.max(0, Math.round(start + (target - start) * eased + jitter));
+      reachNumEl.textContent = v.toLocaleString();
+      if (p < 1) animFrame = requestAnimationFrame(tick);
+      else { reachNumEl.textContent = target.toLocaleString(); currentNum = target; animFrame = null; }
+    }
+    animFrame = requestAnimationFrame(tick);
+  }
+
+  function updateReach() {
+    const validGroups = groups.filter(g => g.conditions.length && g.conditions.every(c => {
+      const verb = findVerb(c.verb);
+      if (verb.input === 'chips') return c.targets && c.targets.length > 0;
+      if (verb.input === 'location') return c.location && c.location.trim();
+      return true; // info-only verbs (active, follower count) always valid
+    }));
+
+    if (validGroups.length === 0) {
+      animateNumberTo(null);
+      reachSubEl.textContent = 'Add conditions to see audience size';
+      return;
+    }
+
+    let total = 0;
+    validGroups.forEach(g => {
+      let cnt = 0;
+      g.conditions.forEach((c, i) => {
+        const verb = findVerb(c.verb);
+        let contribution;
+        if (verb.input === 'chips') {
+          const sum = c.targets.reduce((acc, t) => acc + (t.weight || 0.8), 0);
+          const damped = sum * Math.pow(0.78, Math.max(0, c.targets.length - 1));
+          contribution = 240000 * damped * verb.mult;
+        } else if (verb.input === 'location') {
+          contribution = 18000000 * verb.mult;
+        } else {
+          contribution = 240000 * verb.mult;
+        }
+        if (i === 0) cnt = contribution;
+        else cnt = cnt * 0.42 * verb.mult;
+      });
+      total += cnt * 0.85;
+    });
+    total = Math.max(1, Math.round(total));
+    animateNumberTo(total);
+    const word = total > 500000 ? 'massive'
+              : total > 100000 ? 'strong'
+              : total > 15000  ? 'strong'
+              : total > 3000   ? 'focused'
+              : 'niche';
+    reachSubEl.textContent = `A ${word} audience matching your criteria`;
+  }
+
+  // ─── EDITOR POPOVERS ─────────────────────────────────────────
+  function closeEditor() {
+    if (activeEditor) { activeEditor.remove(); activeEditor = null; }
+  }
+
+  function positionEditor(editor, anchor) {
+    editor.style.visibility = 'hidden';
+    document.body.appendChild(editor);
+    const r = anchor.getBoundingClientRect();
+    let left = r.left;
+    if (left + 280 > window.innerWidth - 16) left = window.innerWidth - 296;
+    editor.style.left = Math.max(8, left) + 'px';
+    editor.style.top = (r.bottom + window.scrollY + 6) + 'px';
+    editor.style.visibility = 'visible';
+  }
+
+  function openVerbEditor(anchor, groupId, condId) {
+    closeEditor();
+    const cond = findCond(groupId, condId);
+    if (!cond) return;
+    const ed = document.createElement('div');
+    ed.className = 'editor';
+    ed.innerHTML = VERBS.map(v => `
+      <div class="editor-option" data-value="${v.id}">
+        <span style="flex:1;">${esc(v.label)}</span>
+        ${v.id === cond.verb ? '<span class="check">✓</span>' : ''}
+      </div>`).join('');
+    ed.addEventListener('click', e => {
+      const opt = e.target.closest('.editor-option');
+      if (!opt) return;
+      const newVerb = opt.dataset.value;
+      cond.verb = newVerb;
+      // Clear incompatible state when switching verb input type
+      const nv = findVerb(newVerb);
+      if (nv.input !== 'chips') { cond.targets = []; }
+      if (nv.input !== 'location') { delete cond.location; }
+      if (nv.modifier === 'time' && !cond.time) cond.time = TIME_OPTIONS[2];
+      if (nv.modifier === 'range' && !cond.range) cond.range = RANGE_OPTIONS[1];
+      closeEditor(); render();
+    });
+    positionEditor(ed, anchor);
+    activeEditor = ed;
+  }
+
+  function openListEditor(anchor, options, currentValue, onPick) {
+    closeEditor();
+    const ed = document.createElement('div');
+    ed.className = 'editor';
+    ed.innerHTML = options.map(o => `
+      <div class="editor-option" data-value="${esc(o)}">
+        <span style="flex:1;">${esc(o)}</span>
+        ${o === currentValue ? '<span class="check">✓</span>' : ''}
+      </div>`).join('');
+    ed.addEventListener('click', e => {
+      const opt = e.target.closest('.editor-option');
+      if (!opt) return;
+      onPick(opt.dataset.value);
+      closeEditor(); render();
+    });
+    positionEditor(ed, anchor);
+    activeEditor = ed;
+  }
+
+  function openTargetEditor(anchor, groupId, condId, replacingHandle) {
+    closeEditor();
+    const cond = findCond(groupId, condId);
+    if (!cond) return;
+    const ed = document.createElement('div');
+    ed.className = 'editor';
+    ed.innerHTML = `
+      <input type="text" class="editor-search" placeholder="Search @people or #hashtags…" />
+      <div class="editor-list"></div>
+    `;
+    const search = ed.querySelector('.editor-search');
+    const list = ed.querySelector('.editor-list');
+
+    function renderList(filter = '') {
+      const f = filter.toLowerCase().trim();
+      const matches = PEOPLE.filter(p =>
+        !f || p.handle.toLowerCase().includes(f) || p.name.toLowerCase().includes(f)
+      ).slice(0, 10);
+      if (matches.length === 0) {
+        list.innerHTML = `<div style="padding:12px;text-align:center;font-size:12px;color:var(--text-tertiary);">No matches</div>`;
+        return;
+      }
+      list.innerHTML = matches.map(p => {
+        const inRow = cond.targets.some(t => t.handle === p.handle && t.handle !== replacingHandle);
+        const isCurrent = p.handle === replacingHandle;
+        return `
+          <div class="editor-option ${inRow ? 'disabled' : ''}" data-handle="${esc(p.handle)}">
+            ${avatarHTML(p)}
+            <span style="display:flex;flex-direction:column;min-width:0;">
+              <span class="ph">${esc(p.handle)}</span>
+              <span class="sb">${esc(p.sub)}</span>
+            </span>
+            ${isCurrent ? '<span class="check">✓</span>' : ''}
+          </div>`;
+      }).join('');
+    }
+
+    renderList();
+    search.addEventListener('input', () => renderList(search.value));
+    setTimeout(() => search.focus(), 30);
+
+    list.addEventListener('click', e => {
+      const opt = e.target.closest('.editor-option');
+      if (!opt || opt.classList.contains('disabled')) return;
+      const picked = PEOPLE.find(p => p.handle === opt.dataset.handle);
+      if (!picked) return;
+      if (replacingHandle) {
+        const idx = cond.targets.findIndex(t => t.handle === replacingHandle);
+        if (idx >= 0) cond.targets[idx] = picked;
+        closeEditor(); render();
+      } else {
+        if (!cond.targets.some(t => t.handle === picked.handle)) cond.targets.push(picked);
+        render();
+        // Keep editor open for multi-add
+        const newAnchor = groupsEl.querySelector(`[data-action="add-chip"][data-cond-id="${condId}"]`);
+        if (newAnchor) openTargetEditor(newAnchor, groupId, condId);
+        else closeEditor();
+      }
+    });
+
+    positionEditor(ed, anchor);
+    activeEditor = ed;
+  }
+
+  function findCond(groupId, condId) {
+    const g = groups.find(g => g.id === groupId);
+    return g?.conditions.find(c => c.id === condId);
+  }
+
+  // ─── EVENT WIRING ────────────────────────────────────────────
+  groupsEl.addEventListener('click', e => {
+    const t = e.target.closest('[data-action]');
+    if (!t) return;
+    e.stopPropagation();
+    const action = t.dataset.action;
+    const groupId = t.dataset.groupId;
+    const condId = t.dataset.condId;
+    const handle = t.dataset.handle;
+
+    if (action === 'edit-verb')         openVerbEditor(t, groupId, condId);
+    else if (action === 'edit-chip')    openTargetEditor(t, groupId, condId, handle);
+    else if (action === 'add-chip')     openTargetEditor(t, groupId, condId);
+    else if (action === 'edit-time') {
+      const cond = findCond(groupId, condId);
+      openListEditor(t, TIME_OPTIONS, cond?.time, v => { cond.time = v; });
+    }
+    else if (action === 'edit-range') {
+      const cond = findCond(groupId, condId);
+      openListEditor(t, RANGE_OPTIONS, cond?.range, v => { cond.range = v; });
+    }
+    else if (action === 'remove-chip') {
+      const cond = findCond(groupId, condId);
+      if (cond) { cond.targets = cond.targets.filter(x => x.handle !== handle); closeEditor(); render(); }
+    }
+    else if (action === 'add-condition') {
+      const g = groups.find(g => g.id === groupId);
+      if (g) {
+        const c = { id: rid(), verb: 'follows', targets: [] };
+        g.conditions.push(c); render();
+        setTimeout(() => {
+          const a = groupsEl.querySelector(`[data-action="edit-verb"][data-cond-id="${c.id}"]`);
+          if (a) openVerbEditor(a, g.id, c.id);
+        }, 30);
+      }
+    }
+    else if (action === 'remove-condition') {
+      const g = groups.find(g => g.id === groupId);
+      if (g) {
+        g.conditions = g.conditions.filter(c => c.id !== condId);
+        if (g.conditions.length === 0) {
+          // If we emptied the group, drop the whole group (unless it's the only one)
+          if (groups.length > 1) groups = groups.filter(x => x.id !== g.id);
+          else g.conditions.push({ id: rid(), verb: 'follows', targets: [] });
+        }
+        closeEditor(); render();
+      }
+    }
+    else if (action === 'add-or-group') {
+      const ng = { id: gid(), conditions: [ { id: rid(), verb: 'follows', targets: [] } ] };
+      groups.push(ng); render();
+      setTimeout(() => {
+        const a = groupsEl.querySelector(`[data-action="edit-verb"][data-cond-id="${ng.conditions[0].id}"]`);
+        if (a) openVerbEditor(a, ng.id, ng.conditions[0].id);
+      }, 30);
+    }
+  });
+
+  // Inputs (the location text field)
+  groupsEl.addEventListener('input', e => {
+    const t = e.target.closest('[data-action="edit-location"]');
+    if (!t) return;
+    const cond = findCond(t.dataset.groupId, t.dataset.condId);
+    if (cond) { cond.location = t.value; updateReach(); }
+  });
+
+  document.addEventListener('click', e => {
+    if (activeEditor && !activeEditor.contains(e.target) && !e.target.closest('[data-action]')) {
+      closeEditor();
+    }
+  });
+
+  // ─── INIT ────────────────────────────────────────────────────
+  render();
+})();
+</script>
+
+</body>
+</html>
