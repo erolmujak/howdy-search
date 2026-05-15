@@ -715,8 +715,7 @@
     { id: 'positive',   label: 'Positive comments',mult: 0.30,input: 'chips', modifier: 'time' },
     { id: 'negative',   label: 'Negative comments',mult: 0.20,input: 'chips', modifier: 'time' },
     { id: 'engaged',    label: 'Engaged with',     mult: 0.85,input: 'chips' },
-    { id: 'active',     label: 'Active',           mult: 1.0, input: 'none',  modifier: 'time' },
-    { id: 'followers',  label: 'Follower count',   mult: 0.7, input: 'none',  modifier: 'range' }
+    { id: 'active',     label: 'Active',           mult: 1.0, input: 'none',  modifier: 'time' }
   ];
 
   const TIME_OPTIONS = [
@@ -1008,8 +1007,12 @@
 
     function renderList(filter = '') {
       const f = filter.toLowerCase().trim();
+      if (!f) {
+        list.innerHTML = `<div style="padding:12px;text-align:center;font-size:12px;color:var(--text-tertiary);">Start typing to search</div>`;
+        return;
+      }
       const matches = PEOPLE.filter(p =>
-        !f || p.handle.toLowerCase().includes(f) || p.name.toLowerCase().includes(f)
+        p.handle.toLowerCase().includes(f) || p.name.toLowerCase().includes(f)
       ).slice(0, 10);
       if (matches.length === 0) {
         list.innerHTML = `<div style="padding:12px;text-align:center;font-size:12px;color:var(--text-tertiary);">No matches</div>`;
@@ -1022,8 +1025,8 @@
           <div class="editor-option ${inRow ? 'disabled' : ''}" data-handle="${esc(p.handle)}">
             ${avatarHTML(p)}
             <span style="display:flex;flex-direction:column;min-width:0;">
-              <span class="ph">${esc(p.handle)}</span>
-              <span class="sb">${esc(p.sub)}</span>
+              <span class="ph">${esc(p.name)}</span>
+              <span class="sb">@${esc(p.handle)}</span>
             </span>
             ${isCurrent ? '<span class="check">✓</span>' : ''}
           </div>`;
